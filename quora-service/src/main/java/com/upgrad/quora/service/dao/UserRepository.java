@@ -35,4 +35,45 @@ public class UserRepository {
         entityManager.persist(auth);
     }
 
+    public UserAuth getUserByAuthToken(String authorization) {
+
+        try {
+            UserAuth userAuth = entityManager.createNamedQuery("getUserByToken", UserAuth.class).setParameter("token", authorization).getSingleResult();
+            //UserAuth userAuth1 = updateUserAuth(userAuth);
+            return userAuth;
+        }
+        catch (NoResultException noResultException) {
+            return null;
+        }
+    }
+
+    public UserAuth updateUserAuth(UserAuth userAuth) {
+        entityManager.merge(userAuth);
+        return userAuth;
+    }
+
+    public User getUserById(String uuid) {
+        try {
+            return entityManager.createNamedQuery("getUserById", User.class).setParameter("uuid", uuid).getSingleResult();
+        }
+        catch (NoResultException noResultException) {
+            return null;
+        }
+    }
+
+   /* public User updateUser(User user) {
+        User merge = entityManager.merge(user);
+        return merge;
+    }*/
+
+    public void deleteUser(Integer id) {
+        entityManager.flush();
+        entityManager.clear();
+        User user = entityManager.find(User.class, id);
+       // entityManager.getTransaction().begin();
+
+        entityManager.remove(user);
+        //entityManager.getTransaction().commit();
+    }
+
 }

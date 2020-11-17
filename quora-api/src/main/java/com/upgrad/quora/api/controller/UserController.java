@@ -1,6 +1,7 @@
 package com.upgrad.quora.api.controller;
 
 import com.upgrad.quora.api.model.SigninResponse;
+import com.upgrad.quora.api.model.SignoutResponse;
 import com.upgrad.quora.api.model.SignupUserRequest;
 import com.upgrad.quora.api.model.SignupUserResponse;
 import com.upgrad.quora.service.business.JwtTokenProvider;
@@ -8,6 +9,7 @@ import com.upgrad.quora.service.business.PasswordCryptographyProvider;
 import com.upgrad.quora.service.business.UserService;
 import com.upgrad.quora.service.entity.User;
 import com.upgrad.quora.service.entity.UserAuth;
+import com.upgrad.quora.service.exception.SignOutRestrictedException;
 import com.upgrad.quora.service.exception.SignUpRestrictedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -103,6 +105,7 @@ public class UserController {
             userAuth.setUser(user);
             userAuth.setExpiresAt(ZonedDateTime.now().plusHours(8));
             userAuth.setLoginAt(ZonedDateTime.now());
+            userAuth.setLogoutAt(null);
 
                 userService.createToken(userAuth);
 
@@ -114,6 +117,22 @@ public class UserController {
 
         return null;
 
+
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/user/signout", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<SignoutResponse> logout(@RequestParam(value = "authorization") String authorization) throws SignOutRestrictedException {
+        UserAuth userAuth = userService.getUserByToken(authorization);
+        if(userAuth == null) {
+            throw new SignOutRestrictedException("SGN-001", "user has not signed in");
+        }
+        userAuth.setLogoutAt(ZonedDateTime.now());
+        userService.updateUserAuth(userAuth);
+
+        SignoutResponse signoutResponse = new SignoutResponse();
+        signoutResponse.setId(userAuth.getUuid());
+        signoutResponse.setMessage("SIGNED OUT SUCCESSFULLY");
+        return new ResponseEntity<SignoutResponse>(signoutResponse, HttpStatus.OK);
 
     }
 

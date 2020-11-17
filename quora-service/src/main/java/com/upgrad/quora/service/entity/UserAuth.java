@@ -6,9 +6,11 @@ import java.time.ZonedDateTime;
 
 @Entity
 @Table(name = "user_auth")
+@NamedQueries(@NamedQuery(name = "getUserByToken", query = "select u from UserAuth u where u.token = :token"))
 public class UserAuth {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
 
@@ -16,7 +18,8 @@ public class UserAuth {
     private String uuid;
 
 
-    @ManyToOne()
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
     private User user;
 
 
