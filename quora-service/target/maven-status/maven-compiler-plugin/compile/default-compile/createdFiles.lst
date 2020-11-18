@@ -1,9 +1,16 @@
+com\upgrad\quora\service\business\UserService.class
+com\upgrad\quora\service\entity\User.class
 com\upgrad\quora\service\exception\SignOutRestrictedException.class
 com\upgrad\quora\service\common\GenericErrorCode.class
 com\upgrad\quora\service\exception\UserNotFoundException.class
 com\upgrad\quora\service\common\UnexpectedException.class
+com\upgrad\quora\service\dao\UserRepository.class
 com\upgrad\quora\service\common\ErrorCode.class
+com\upgrad\quora\service\entity\Question.class
 com\upgrad\quora\service\business\JwtTokenProvider.class
+com\upgrad\quora\service\business\QuestionService.class
+com\upgrad\quora\service\dao\QuestionRepository.class
+com\upgrad\quora\service\entity\UserAuth.class
 com\upgrad\quora\service\exception\AnswerNotFoundException.class
 com\upgrad\quora\service\exception\InvalidQuestionException.class
 com\upgrad\quora\service\business\PasswordCryptographyProvider.class
