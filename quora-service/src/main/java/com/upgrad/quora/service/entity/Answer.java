@@ -1,15 +1,15 @@
 package com.upgrad.quora.service.entity;
 
+
 import javax.persistence.*;
 import java.time.ZonedDateTime;
 
 @Entity
-@Table(name = "question")
-@NamedQueries({@NamedQuery(name = "getAllQuestions", query = "select q from Question q"),
-@NamedQuery(name = "getQuestionById", query = "select q from Question q where q.uuid = :uuid"),
-@NamedQuery(name = "deleteQuestion", query = "delete from Question q where q.uuid = :uuid"),
-@NamedQuery(name = "getQuestionsByUser", query = "select q from Question q where q.user = :user")})
-public class Question {
+@Table(name = "answer")
+@NamedQueries({@NamedQuery(name = "getAnswerById", query = "select a from Answer a where a.uuid = :uuid"),
+@NamedQuery(name = "getAllQuestionsByQuestion", query = "select a from Answer a where a.question = :question")})
+public class Answer {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,8 +20,9 @@ public class Question {
     @Column(name = "uuid")
     private String uuid;
 
-    @Column(name = "content")
-    private String content;
+
+    @Column(name = "ans")
+    private String ans;
 
 
     @Column(name = "date")
@@ -32,6 +33,9 @@ public class Question {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @ManyToOne()
+    @JoinColumn(name = "question_id")
+    private Question question;
 
     public Integer getId() {
         return id;
@@ -49,12 +53,12 @@ public class Question {
         this.uuid = uuid;
     }
 
-    public String getContent() {
-        return content;
+    public String getAns() {
+        return ans;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setAns(String ans) {
+        this.ans = ans;
     }
 
     public ZonedDateTime getDate() {
@@ -71,5 +75,13 @@ public class Question {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Question getQuestion() {
+        return question;
+    }
+
+    public void setQuestion(Question question) {
+        this.question = question;
     }
 }
