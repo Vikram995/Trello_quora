@@ -26,6 +26,18 @@ public class UserRepository {
 
     }
 
+
+    public User getUserByEmail(String email) {
+
+        try {
+            return entityManager.createNamedQuery("getUserByEmail", User.class).setParameter("email", email).getSingleResult();
+        }
+        catch (NoResultException noResultException) {
+            return null;
+        }
+
+    }
+
     public User createUser(User user) {
         entityManager.persist(user);
         return user;
@@ -39,7 +51,6 @@ public class UserRepository {
 
         try {
             UserAuth userAuth = entityManager.createNamedQuery("getUserByToken", UserAuth.class).setParameter("token", authorization).getSingleResult();
-            //UserAuth userAuth1 = updateUserAuth(userAuth);
             return userAuth;
         }
         catch (NoResultException noResultException) {

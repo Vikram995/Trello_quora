@@ -16,10 +16,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.ZonedDateTime;
 import java.util.Base64;
@@ -42,6 +39,10 @@ public class UserController {
         User user = userService.getUserByName(request.getUserName());
         if(user != null) {
             throw new SignUpRestrictedException("SGR-001", "Try any other Username, this Username has already been taken");
+        }
+        User userByEmail = userService.getUserByEmail(request.getEmailAddress());
+        if(userByEmail != null) {
+            throw new SignUpRestrictedException("SGR-002", "This user has already been registered, try with any other emailId");
         }
         User userEntity = new User();
         userEntity.setAboutMe(request.getAboutMe());
@@ -121,10 +122,10 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/user/signout", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<SignoutResponse> logout(@RequestParam(value = "authorization") String authorization) throws SignOutRestrictedException {
+    public ResponseEntity<SignoutResponse> logout(@RequestHeader(value = "authorization") String authorization) throws SignOutRestrictedException {
         UserAuth userAuth = userService.getUserByToken(authorization);
         if(userAuth == null) {
-            throw new SignOutRestrictedException("SGN-001", "user has not signed in");
+            throw new SignOutRestrictedException("SGR-001", "User is not Signed in");
         }
         userAuth.setLogoutAt(ZonedDateTime.now());
         userService.updateUserAuth(userAuth);

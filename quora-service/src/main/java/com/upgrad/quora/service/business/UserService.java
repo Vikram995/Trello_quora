@@ -21,6 +21,12 @@ public class UserService {
         }
 
 
+    public User getUserByEmail(String email) {
+        User user = userRepository.getUserByEmail(email);
+        return user;
+    }
+
+
     @Transactional(propagation = Propagation.REQUIRED)
         public User createUser(User user) {
             userRepository.createUser(user);
@@ -36,13 +42,8 @@ public class UserService {
 
         @Transactional(propagation = Propagation.REQUIRED)
         public UserAuth getUserByToken(String authorization)  {
-            UserAuth userAuth = userRepository.getUserByAuthToken(authorization);
-            if(userAuth != null) {
+          return userRepository.getUserByAuthToken(authorization);
 
-                //userAuth.setLogoutAt(ZonedDateTime.now());
-                return userAuth;
-            }
-            return null;
         }
 
         @Transactional(propagation = Propagation.REQUIRED)
