@@ -72,19 +72,13 @@ public class UserRepository {
         }
     }
 
-   /* public User updateUser(User user) {
-        User merge = entityManager.merge(user);
-        return merge;
-    }*/
 
     public void deleteUser(Integer id) {
         entityManager.flush();
         entityManager.clear();
         User user = entityManager.find(User.class, id);
-       // entityManager.getTransaction().begin();
 
         entityManager.remove(user);
-        //entityManager.getTransaction().commit();
     }
 
 }

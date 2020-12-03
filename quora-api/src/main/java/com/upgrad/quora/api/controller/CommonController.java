@@ -5,7 +5,6 @@ import com.upgrad.quora.service.business.UserService;
 import com.upgrad.quora.service.entity.User;
 import com.upgrad.quora.service.entity.UserAuth;
 import com.upgrad.quora.service.exception.AuthorizationFailedException;
-import com.upgrad.quora.service.exception.SignOutRestrictedException;
 import com.upgrad.quora.service.exception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,16 +19,19 @@ public class CommonController {
     UserService userService;
 
     @RequestMapping(method = RequestMethod.GET, value = "/userprofile/{userId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<UserDetailsResponse> getProfile(@PathVariable(name = "userId") String uuid, @RequestParam(name = "authorization") String authorization) throws SignOutRestrictedException, AuthorizationFailedException, UserNotFoundException {
+    public ResponseEntity<UserDetailsResponse> getProfile(@PathVariable(name = "userId") String uuid, @RequestHeader(name = "authorization") String authorization) throws UserNotFoundException, AuthorizationFailedException {
         UserAuth userAuth = userService.getUserAuthByToken(authorization);
         if(userAuth == null) {
-            throw new AuthorizationFailedException("ATH-001", "User has not signed in");
+            throw new AuthorizationFailedException("ATHR-001", "User has not signed in");
         }
         if(userAuth.getLogoutAt() != null) {
 
-            throw new AuthorizationFailedException("ATH-002", "User is signed out.Sign in first to get user details");
+            throw new AuthorizationFailedException("ATHR-002", "User is signed out.Sign in first to get user details");
         }
         User user = userService.getUserById(uuid);
+        if(user == null) {
+            throw new UserNotFoundException("USR-001", "User with entered uuid does not exist");
+        }
         UserDetailsResponse userDetailsResponse = new UserDetailsResponse();
         userDetailsResponse.setFirstName(user.getFirstName());
         userDetailsResponse.setAboutMe(user.getAboutMe());
