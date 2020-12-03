@@ -47,10 +47,10 @@ public class UserRepository {
         entityManager.persist(auth);
     }
 
-    public UserAuth getUserByAuthToken(String authorization) {
+    public UserAuth getUserAuthByAuthToken(String authorization) {
 
         try {
-            UserAuth userAuth = entityManager.createNamedQuery("getUserByToken", UserAuth.class).setParameter("token", authorization).getSingleResult();
+            UserAuth userAuth = entityManager.createNamedQuery("getUserAuthByToken", UserAuth.class).setParameter("token", authorization).getSingleResult();
             return userAuth;
         }
         catch (NoResultException noResultException) {

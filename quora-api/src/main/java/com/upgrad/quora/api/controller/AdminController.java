@@ -21,7 +21,7 @@ public class AdminController {
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/admin/user/{userId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<UserDeleteResponse> deleteUser(@PathVariable(name = "userId") String uuid, @RequestParam(name = "authorization") String authorization) throws AuthorizationFailedException, UserNotFoundException {
-        UserAuth userAuth = userService.getUserByToken(authorization);
+        UserAuth userAuth = userService.getUserAuthByToken(authorization);
         if(userAuth == null) {
             throw new AuthorizationFailedException("ATHR-001", "User has not signed in");
 

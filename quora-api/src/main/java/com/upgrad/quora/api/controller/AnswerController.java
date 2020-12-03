@@ -41,7 +41,7 @@ public class AnswerController {
             throw new InvalidQuestionException("QUES-001", "The question entered is invalid");
         }
 
-        UserAuth userAuth = userService.getUserByToken(authorization);
+        UserAuth userAuth = userService.getUserAuthByToken(authorization);
         if(userAuth == null) {
             throw new AuthorizationFailedException("ATHR-001", "User has not signed in");
         }
@@ -73,7 +73,7 @@ public class AnswerController {
     public ResponseEntity<AnswerEditResponse> editAnswerContent(@PathVariable(name = "answerId") String auuid,
                                                                 AnswerEditRequest answerEditRequest, @RequestHeader(name = "authorization")
                                                                             String authorization) throws AuthorizationFailedException, AnswerNotFoundException {
-        UserAuth userAuth = userService.getUserByToken(authorization);
+        UserAuth userAuth = userService.getUserAuthByToken(authorization);
         if(userAuth == null) {
             throw new AuthorizationFailedException("ATHR-001", "User has not signed in");
         }
@@ -107,7 +107,7 @@ public class AnswerController {
     @RequestMapping(method = RequestMethod.DELETE, value = "/answer/delete/{answerId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<AnswerDeleteResponse> deleteAnswer(@PathVariable(name = "answerId") String auuid, @RequestHeader(name = "authorization") String authorization) throws AuthorizationFailedException, AnswerNotFoundException {
 
-        UserAuth userAuth = userService.getUserByToken(authorization);
+        UserAuth userAuth = userService.getUserAuthByToken(authorization);
         if(userAuth == null) {
             throw new AuthorizationFailedException("ATHR-001", "User has not signed in");
         }
@@ -141,7 +141,7 @@ public class AnswerController {
 
     @RequestMapping(method = RequestMethod.GET, value = "answer/all/{questionId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<AnswerDetailsResponse> getAllAnswersToQuestion(@PathVariable(name = "questionId") String quuid, @RequestHeader(name = "authorization") String authorization) throws AuthorizationFailedException, InvalidQuestionException {
-        UserAuth userAuth = userService.getUserByToken(authorization);
+        UserAuth userAuth = userService.getUserAuthByToken(authorization);
         if(userAuth == null) {
             throw new AuthorizationFailedException("ATHR-001", "User has not signed in");
         }

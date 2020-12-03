@@ -41,8 +41,8 @@ public class UserService {
 
 
         @Transactional(propagation = Propagation.REQUIRED)
-        public UserAuth getUserByToken(String authorization)  {
-          return userRepository.getUserByAuthToken(authorization);
+        public UserAuth getUserAuthByToken(String authorization)  {
+          return userRepository.getUserAuthByAuthToken(authorization);
 
         }
 

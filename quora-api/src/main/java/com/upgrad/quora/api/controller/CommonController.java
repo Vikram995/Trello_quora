@@ -21,12 +21,12 @@ public class CommonController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/userprofile/{userId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<UserDetailsResponse> getProfile(@PathVariable(name = "userId") String uuid, @RequestParam(name = "authorization") String authorization) throws SignOutRestrictedException, AuthorizationFailedException, UserNotFoundException {
-        UserAuth userAuth = userService.getUserByToken(authorization);
+        UserAuth userAuth = userService.getUserAuthByToken(authorization);
         if(userAuth == null) {
             throw new AuthorizationFailedException("ATH-001", "User has not signed in");
         }
         if(userAuth.getLogoutAt() != null) {
-           // System.out.println("******************************************************"+userAuth.getLogoutAt() + "******************************************************************************************************");
+
             throw new AuthorizationFailedException("ATH-002", "User is signed out.Sign in first to get user details");
         }
         User user = userService.getUserById(uuid);

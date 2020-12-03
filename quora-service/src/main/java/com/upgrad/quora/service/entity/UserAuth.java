@@ -6,7 +6,7 @@ import java.time.ZonedDateTime;
 
 @Entity
 @Table(name = "user_auth")
-@NamedQueries(@NamedQuery(name = "getUserByToken", query = "select u from UserAuth u where u.token = :token"))
+@NamedQueries(@NamedQuery(name = "getUserAuthByToken", query = "select u from UserAuth u where u.token = :token"))
 public class UserAuth {
 
     @Id
