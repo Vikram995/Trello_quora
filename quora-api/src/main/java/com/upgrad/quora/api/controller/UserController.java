@@ -9,6 +9,7 @@ import com.upgrad.quora.service.business.PasswordCryptographyProvider;
 import com.upgrad.quora.service.business.UserService;
 import com.upgrad.quora.service.entity.User;
 import com.upgrad.quora.service.entity.UserAuth;
+import com.upgrad.quora.service.exception.AuthenticationFailedException;
 import com.upgrad.quora.service.exception.SignOutRestrictedException;
 import com.upgrad.quora.service.exception.SignUpRestrictedException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +54,7 @@ public class UserController {
         userEntity.setFirstName(request.getFirstName());
         userEntity.setLastName(request.getLastName());
         userEntity.setUserName(request.getUserName());
-        userEntity.setRole("non-admin");
+        userEntity.setRole("nonadmin");
 
         String encrypt[] = passwordCryptographyProvider.encrypt(request.getPassword());
         userEntity.setSalt(encrypt[0]);
@@ -75,7 +76,7 @@ public class UserController {
 
 
     @RequestMapping(method = RequestMethod.POST, value = "/user/signin", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<SigninResponse> signin(@RequestParam(name = "authorization") String authorization) {
+    public ResponseEntity<SigninResponse> signin(@RequestHeader(name = "authorization") String authorization) throws AuthenticationFailedException {
 
         String pass[] = authorization.split("Basic ");
 
@@ -88,13 +89,16 @@ public class UserController {
 
 
         User user = userService.getUserByName(encrypt[0]);
+        if(user == null) {
+            throw new AuthenticationFailedException("ATH-001", "This username does not exist");
+        }
 
         String encrypt1 = PasswordCryptographyProvider.encrypt(password, user.getSalt());
 
         if(user.getPassword().equals(encrypt1)) {
             SigninResponse response = new SigninResponse();
             response.setId(user.getUuid());
-            response.setMessage("Authenticated Successfully");
+            response.setMessage("SIGNED IN SUCCESSFULLY");
             JwtTokenProvider jwtTokenProvider = new JwtTokenProvider(user.getPassword());
 
 
@@ -116,7 +120,8 @@ public class UserController {
             return responseResponseEntity;
         }
 
-        return null;
+
+        throw new AuthenticationFailedException("ATH-002", "Password failed");
 
 
     }
