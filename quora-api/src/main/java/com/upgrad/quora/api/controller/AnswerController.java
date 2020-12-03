@@ -33,6 +33,7 @@ public class AnswerController {
     @Autowired
     AnswerService answerService;
 
+    //creates an answer to a particular question
     @RequestMapping(method = RequestMethod.POST, value = "/question/{questionId}/answer/create", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<AnswerResponse> createAnswer(@PathVariable(name = "questionId") String quuid, @RequestHeader(name = "authorization")
             String authorization, AnswerRequest answerRequest) throws InvalidQuestionException, AuthorizationFailedException {
@@ -68,7 +69,7 @@ public class AnswerController {
     }
 
 
-
+    //updates an answer
     @RequestMapping(method = RequestMethod.PUT, value =  "/answer/edit/{answerId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<AnswerEditResponse> editAnswerContent(@PathVariable(name = "answerId") String auuid,
                                                                 AnswerEditRequest answerEditRequest, @RequestHeader(name = "authorization")
@@ -104,6 +105,7 @@ public class AnswerController {
 
     }
 
+    //deletes an answer only if created by the same particular user
     @RequestMapping(method = RequestMethod.DELETE, value = "/answer/delete/{answerId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<AnswerDeleteResponse> deleteAnswer(@PathVariable(name = "answerId") String auuid, @RequestHeader(name = "authorization") String authorization) throws AuthorizationFailedException, AnswerNotFoundException {
 
@@ -138,7 +140,7 @@ public class AnswerController {
     }
 
 
-
+//fetches all answers for a particular question
     @RequestMapping(method = RequestMethod.GET, value = "answer/all/{questionId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<AnswerDetailsResponse> getAllAnswersToQuestion(@PathVariable(name = "questionId") String quuid, @RequestHeader(name = "authorization") String authorization) throws AuthorizationFailedException, InvalidQuestionException {
         UserAuth userAuth = userService.getUserAuthByToken(authorization);

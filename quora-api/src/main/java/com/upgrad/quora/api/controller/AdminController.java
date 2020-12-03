@@ -19,6 +19,7 @@ public class AdminController {
     @Autowired
     UserService userService;
 
+    //deletes the user only if the user is an admin
     @RequestMapping(method = RequestMethod.DELETE, value = "/admin/user/{userId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<UserDeleteResponse> deleteUser(@PathVariable(name = "userId") String uuid, @RequestHeader(name = "authorization") String authorization) throws AuthorizationFailedException, UserNotFoundException {
         UserAuth userAuth = userService.getUserAuthByToken(authorization);

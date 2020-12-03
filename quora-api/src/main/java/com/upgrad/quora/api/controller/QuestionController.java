@@ -27,6 +27,7 @@ public class QuestionController {
     @Autowired
     QuestionService questionService;
 
+    //creates a question
     @RequestMapping(method = RequestMethod.POST, value = "/question/create", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<QuestionResponse> createQuestion(QuestionRequest request, @RequestHeader(name = "authorization") String authorization) throws AuthorizationFailedException {
         UserAuth userAuth = userService.getUserAuthByToken(authorization);
@@ -54,6 +55,7 @@ public class QuestionController {
     }
 
 
+    //fetches all the questions
     @RequestMapping(method = RequestMethod.GET, value = "/question/all", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<QuestionDetailsResponse> getAllQuestions(@RequestHeader(name = "authorization") String authorization) throws AuthorizationFailedException {
         UserAuth userAuth = userService.getUserAuthByToken(authorization);
@@ -83,6 +85,8 @@ public class QuestionController {
     }
 
 
+
+    //updates a question
     @RequestMapping(method = RequestMethod.PUT, value = "/question/edit/{questionId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<QuestionEditResponse> editQuestionContent(@PathVariable(name = "questionId") String uuid, @RequestHeader(name = "authorization") String authorization, QuestionEditRequest questionEditRequest) throws AuthorizationFailedException, InvalidQuestionException {
         UserAuth userAuth = userService.getUserAuthByToken(authorization);

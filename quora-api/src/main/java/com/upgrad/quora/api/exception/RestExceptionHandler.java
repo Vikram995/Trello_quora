@@ -10,6 +10,7 @@ import org.springframework.web.context.request.WebRequest;
 
 @ControllerAdvice
 public class RestExceptionHandler {
+    //catches the relevant Exceptions with relevant handlers
 
     @ExceptionHandler(SignUpRestrictedException.class)
     public ResponseEntity<ErrorResponse> signUpRestrictedException(SignUpRestrictedException exc, WebRequest request) {

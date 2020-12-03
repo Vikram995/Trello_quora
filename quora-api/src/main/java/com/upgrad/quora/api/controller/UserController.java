@@ -34,6 +34,8 @@ public class UserController {
 
 
 
+
+    //signup of the user
     @RequestMapping(method = RequestMethod.POST, value = "/user/signup", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
         public ResponseEntity<SignupUserResponse> signup(SignupUserRequest request) throws SignUpRestrictedException {
 
@@ -75,6 +77,7 @@ public class UserController {
 
 
 
+    //sign in of a user
     @RequestMapping(method = RequestMethod.POST, value = "/user/signin", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<SigninResponse> signin(@RequestHeader(name = "authorization") String authorization) throws AuthenticationFailedException {
 
@@ -126,6 +129,8 @@ public class UserController {
 
     }
 
+
+    //sign outs the user
     @RequestMapping(method = RequestMethod.POST, value = "/user/signout", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<SignoutResponse> logout(@RequestHeader(value = "authorization") String authorization) throws SignOutRestrictedException {
         UserAuth userAuth = userService.getUserAuthByToken(authorization);

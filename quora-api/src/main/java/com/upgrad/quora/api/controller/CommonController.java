@@ -18,6 +18,7 @@ public class CommonController {
     @Autowired
     UserService userService;
 
+    //fetches the profile of a particular user
     @RequestMapping(method = RequestMethod.GET, value = "/userprofile/{userId}", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<UserDetailsResponse> getProfile(@PathVariable(name = "userId") String uuid, @RequestHeader(name = "authorization") String authorization) throws UserNotFoundException, AuthorizationFailedException {
         UserAuth userAuth = userService.getUserAuthByToken(authorization);
