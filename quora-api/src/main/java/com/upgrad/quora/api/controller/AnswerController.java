@@ -34,6 +34,8 @@ public class AnswerController {
     AnswerService answerService;
 
     //creates an answer to a particular question
+    //throws Invalid Question Exception and Authorization Failed Exception
+
     @RequestMapping(method = RequestMethod.POST, value = "/question/{questionId}/answer/create", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<AnswerResponse> createAnswer(@PathVariable(name = "questionId") String quuid, @RequestHeader(name = "authorization")
             String authorization, AnswerRequest answerRequest) throws InvalidQuestionException, AuthorizationFailedException {

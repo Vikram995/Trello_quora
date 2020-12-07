@@ -17,7 +17,7 @@ public class AnswerService {
     @Autowired
     AnswerRepository answerRepository;
 
-
+//Creates an answer
     @Transactional(propagation = Propagation.REQUIRED)
     public Answer createAnswer(Answer answer) {
 
@@ -25,12 +25,12 @@ public class AnswerService {
         return answer;
     }
 
-
+//Returns an answer by ID
     public Answer getAnswerById(String auuid) {
         return answerRepository.getAnswerById(auuid);
     }
 
-
+//Updates Answer
     @Transactional(propagation = Propagation.REQUIRED)
     public void updateAnswer(Answer answer) {
         answerRepository.updateAnswer(answer);
